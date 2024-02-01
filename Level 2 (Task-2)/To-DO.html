@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        li {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+        input[type="text"] {
+            width: 80%;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        input[type="button"] {
+            margin-left: 10px;
+        }
+        .completed {
+            color: green;
+            text-decoration: line-through;
+        }
+        form{
+            padding-top: 5%;
+        }
+        .display1{
+            text-align: center;
+            height: 5vh;
+            display: flex;
+            background: #ddedf7;
+            margin-left: 23mm;
+        }
+        .display2{
+            height: 7vh;
+            width: 7vh;
+            margin-right:15mm;
+            margin-top: 10mm;
+            margin-left: 178mm;
+        }
+
+    </style>
+</head>
+<body style="color:tomato;">
+    <h1>Basic To-Do App</h1>
+    <div id="container">
+        <form id="add-form">
+            <input type="text" class="display1" id="task-input" placeholder="Enter a new task" required>
+            <input type="submit" class="display2" id="add-button" value="Add" >
+        </form>
+        <ul id="task-list"> </ul>
+    </div>
+    <script>
+        var taskInput = document.getElementById("task-input");
+        var addButton = document.getElementById("add-button");
+        var taskList = document.getElementById("task-list");
+
+        addButton.addEventListener("click", addTask);
+
+        function addTask(event) {
+            event.preventDefault();
+            var task = taskInput.value;
+            if (task) {
+                var listItem = document.createElement("li");
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                var label = document.createElement("label");
+                label.textContent = task;
+                var dateSpan = document.createElement("span");
+                dateSpan.textContent = "Added on: " + new Date().toLocaleString();
+                var deleteButton = document.createElement("input");
+                deleteButton.type = "button";
+                deleteButton.value = "Delete";
+                // Append the elements to the list item
+                listItem.appendChild(checkbox);
+                listItem.appendChild(label);
+                listItem.appendChild(dateSpan);
+                listItem.appendChild(deleteButton);
+                // Append the list item to the task list
+                taskList.appendChild(listItem);
+                // Clear the task input
+                taskInput.value = "";
+                // Add event listeners to the checkbox and the delete button
+                checkbox.addEventListener("change", toggleTask);
+                deleteButton.addEventListener("click", deleteTask);
+            }
+        }
+        function toggleTask(event) {
+            var checkbox = event.target;
+            var listItem = checkbox.parentNode;
+            var label = listItem.querySelector("label");
+            var dateSpan = listItem.querySelector("span");
+            if (checkbox.checked) {
+                listItem.classList.add("completed");
+                dateSpan.textContent = "Completed on: " + new Date().toLocaleString();
+            } else {
+                listItem.classList.remove("completed");
+                dateSpan.textContent = "Added on: " + new Date().toLocaleString();
+            }
+        }
+
+        // Define a function to delete a task
+        function deleteTask(event) {
+            var deleteButton = event.target;
+            var listItem = deleteButton.parentNode;
+            taskList.removeChild(listItem);
+        }
+    </script>
+</body>
+</html>
